@@ -106,13 +106,10 @@ fn all_tools(app: &mut PdfCraftApp, ui: &mut egui::Ui) {
             None => ListRow::spacer(),
         });
     for event in out.events {
-        match event {
-            CollectionEvent::Activate(at) => {
-                if let Some(g) = TOOL_GROUPS.get(at) {
-                    app.select_tool(ui.ctx(), g.id);
-                }
-            }
-            _ => {}
+        if let CollectionEvent::Activate(at) = event
+            && let Some(g) = TOOL_GROUPS.get(at)
+        {
+            app.select_tool(ui.ctx(), g.id);
         }
     }
     let more = if app.all_tools_expanded { "View less" } else { "View more" };
