@@ -105,6 +105,12 @@ Copy-Item (Join-Path $Bin 'pdfchocolate.exe'), (Join-Path $Bin 'pdfchocolate-cli
 foreach ($f in 'LICENSE-MIT', 'LICENSE-APACHE', 'NOTICE') {
   Copy-Item (Join-Path $Root $f) $Stage
 }
+# The full licence texts NOTICE names go to licenses\: the repository's licenses\ folder and the
+# licences of the fonts and icons compiled into the app.
+$Notices = Join-Path $Stage 'licenses'
+New-Item -ItemType Directory -Force -Path $Notices | Out-Null
+Copy-Item -Recurse (Join-Path $Root 'licenses\*') $Notices
+Copy-Item (Join-Path $Root 'assets\fonts\OFL-*.txt'), (Join-Path $Root 'assets\icons\LICENSE-lucide.txt') $Notices
 
 & (Join-Path $PSScriptRoot 'sign.ps1') (Join-Path $Stage 'pdfchocolate.exe') (Join-Path $Stage 'pdfchocolate-cli.exe')
 
@@ -143,7 +149,7 @@ Invoke-Native 'wix build' {
   wix build (Join-Path $PSScriptRoot 'pdfcraft.wxs') -arch $Arch `
     (Join-Path $PSScriptRoot 'installer-ui.wxs') `
     -d "Version=$MsiVersion" -d "BinDir=$Stage" -d "ModelsDir=$Models" -d "IconPath=$(Join-Path $Root 'assets\app-icon\pdfcraft.ico')" `
-    -d "DocsDir=$Docs" -d "HasCraftFontLicences=$HasCraftFontLicences" `
+    -d "DocsDir=$Docs" -d "AppNoticesDir=$Notices" -d "HasCraftFontLicences=$HasCraftFontLicences" `
     -o $Msi
 }
 # Inspect the built MSI, not just the XML, before signing/publishing it. In a child process, so
@@ -167,6 +173,7 @@ foreach ($f in 'NOTICE') {
   Copy-Item (Join-Path $Stage $f) $Portable
 }
 Copy-Item -Recurse $Models (Join-Path $Portable 'models')
+Copy-Item -Recurse $Notices (Join-Path $Portable 'licenses')
 foreach ($f in 'README.md', 'LICENSE', 'LICENSE-MIT', 'LICENSE-APACHE') {
   $p = Join-Path $Root $f
   if (Test-Path $p) { Copy-Item $p $Portable }

@@ -111,6 +111,9 @@ modules:
       - cargo --offline build --release --locked -p pdfcraft
       - install -Dm755 target/release/pdfchocolate /app/bin/pdfchocolate
       - install -Dm644 NOTICE /app/share/doc/pdfchocolate/NOTICE
+      - install -Dm644 -t /app/share/doc/pdfchocolate LICENSE-MIT LICENSE-APACHE
+      - mkdir -p /app/share/doc/pdfchocolate/licenses && cp -R licenses/. /app/share/doc/pdfchocolate/licenses/
+      - install -Dm644 -t /app/share/doc/pdfchocolate/licenses assets/fonts/OFL-*.txt assets/icons/LICENSE-lucide.txt
       - install -Dm644 packaging/linux/io.github.latechocolate.pdfchocolate.desktop /app/share/applications/io.github.latechocolate.pdfchocolate.desktop
       - install -Dm644 packaging/linux/io.github.latechocolate.pdfchocolate.mime.xml /app/share/mime/packages/io.github.latechocolate.pdfchocolate.xml
       - mkdir -p /app/share/icons && cp -R assets/app-icon/hicolor /app/share/icons/
