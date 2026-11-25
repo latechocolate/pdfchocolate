@@ -39,8 +39,8 @@ the current choice and the other valid settings.
 The existing opt-in UI control channel uses the same preference:
 
 ```sh
-pdfcraft-cli ui --control 4242 --control-token-file /path/to/token set key=comment-tool-pinned value=true
-pdfcraft-cli ui --control 4242 --control-token-file /path/to/token state
+pdfchocolate-cli ui --control 4242 --control-token-file /path/to/token set key=comment-tool-pinned value=true
+pdfchocolate-cli ui --control 4242 --control-token-file /path/to/token state
 ```
 
 `ui.state.comment_tool_pinned` reports the boolean. `ui.set` accepts `true` or `false` and refuses
@@ -189,5 +189,3 @@ to 16 and directory entries to 32,768. Cyclic includes are skipped.
   names Adobe as author, except a font under OFL-1.1 alone. The Adobe non-visual data allowed is the
   closed list in `xtask/src/assets.rs` (`adobe_data = true`). `cargo xtask demo-pdf` fails if the PDF
   embeds a font that is not an `ATTRIBUTION.toml` entry.
-- The ArtCraft name, wordmark and logos in `docs/brand/` are trademarks of the ArtCraft Team, not open
-  source (terms in `docs/brand/LICENSE-brand.txt`); they stay in PdfCraft, unmodified.

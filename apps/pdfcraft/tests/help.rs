@@ -4,7 +4,7 @@
 use std::process::{Command, Output, Stdio};
 use std::time::{Duration, Instant};
 
-const BIN: &str = env!("CARGO_BIN_EXE_pdfcraft");
+const BIN: &str = env!("CARGO_BIN_EXE_pdfchocolate");
 
 /// Run the app with `args`, failing if it is still running after 60 s (it opened its window).
 fn run(args: &[&str], stdout: Stdio) -> Output {
@@ -32,7 +32,7 @@ fn help_prints_usage_and_exits() {
         assert!(out.status.success(), "{flag}: {:?} {}", out.status, String::from_utf8_lossy(&out.stderr));
         let stdout = String::from_utf8_lossy(&out.stdout);
         assert!(stdout.starts_with("Usage: pdfcraft [options] [files…]"), "{flag}: {stdout}");
-        assert!(stdout.contains("pdfcraft-cli"), "{flag}: points scripts to the CLI: {stdout}");
+        assert!(stdout.contains("pdfchocolate-cli"), "{flag}: points scripts to the CLI: {stdout}");
     }
     // Wherever it is on the command line, and with files named.
     let out = run(&["missing.pdf", "--help"], Stdio::piped());

@@ -4,7 +4,7 @@ use craft::behavior::IconId;
 use craft::keymap::CommandRef;
 use craft::menu::ThemeChoice;
 use craft::theme::ModeChoice;
-use craft::ui::buttons::{Button, IconButton};
+use craft::ui::buttons::IconButton;
 use craft::ui::contract::{Bind, Outcome as _, Props as _, Show as _, ShowContainer as _};
 use craft::ui::menu::{Menu, MenuItem};
 use craft::ui::popover::DropVeil;
@@ -86,7 +86,7 @@ fn window_body(app: &mut PdfCraftApp, ui: &mut egui::Ui) {
     }
 }
 
-/// The title bar: Home, the document tabs and Open, then the community, shortcuts, theme and
+/// The title bar: Home, the document tabs and Open, then the shortcuts, theme and
 /// Preferences buttons. The window's caption buttons are the bar's own.
 fn title_bar(app: &mut PdfCraftApp, ui: &mut egui::Ui) {
     let ctx = ui.ctx().clone();
@@ -99,7 +99,6 @@ fn title_bar(app: &mut PdfCraftApp, ui: &mut egui::Ui) {
     let theme_label = format!("{}: {theme_label}", tl!("Display theme"));
     let out = TitleBar::new()
         .trailing(|ui, _| {
-            Button::command("help.discord").label("Discord").icon(IconId::new("messages-square")).tooltip(tl!("Join the ArtCraft Discord")).show(ui);
             IconButton::command(IconId::new("circle-help"), "help.shortcuts").show(ui);
             let theme_button = IconButton::command(IconId::new(theme_icon), ThemeChoice::NextMode.command()).label(theme_label.clone()).show(ui);
             let opener = theme_button.response().clone();

@@ -13,13 +13,13 @@
 /// prompt shows both, and an AppImage's menu entry gets the icon.
 #[cfg(not(target_arch = "wasm32"))]
 pub const UPDATE_APP: craft::update::app::App = craft::update::app::App {
-    icon_png: Some(include_bytes!("../../../assets/app-icon/hicolor/128x128/apps/ai.storyteller.pdfcraft.png")),
+    icon_png: Some(include_bytes!("../../../assets/app-icon/hicolor/128x128/apps/io.github.latechocolate.pdfchocolate.png")),
     accent: Some([0xb7, 0x02, 0x28]),
     ..craft::update::suite::PDFCRAFT
 };
 
 /// PdfCraft as the framework's services know it (the host, About, recovery).
-pub const APP_INFO: craft::host::AppInfo = craft::host::AppInfo { id: "pdfcraft", name: "PdfCraft", version: env!("CARGO_PKG_VERSION") };
+pub const APP_INFO: craft::host::AppInfo = craft::host::AppInfo { id: "pdfcraft", name: "PdfChocolate", version: env!("CARGO_PKG_VERSION") };
 
 /// Translate an English UI string into the current language (see [`i18n`]).
 macro_rules! tl {
@@ -86,7 +86,6 @@ pub use workflows::js_dialogs::JsDialog;
 pub use workflows::ocr_verify::{OcrVerify, Phase};
 
 mod app;
-pub(crate) mod brand;
 pub(crate) mod colour_picker;
 pub(crate) mod credits_data;
 pub mod fonts;
@@ -377,8 +376,6 @@ pub struct PdfCraftApp {
     /// The update check, its prompt and the self-update.
     #[cfg(not(target_arch = "wasm32"))]
     pub(crate) updater: craft::update::updater::Updater,
-    /// The desktop app asks for a newer release once it has started (Preferences permitting).
-    pub(crate) startup_check: bool,
     /// Lists the Print dialog's printers in the background (the desktop app sets it; see
     /// [`PrinterSource`]).
     pub printer_source: Option<PrinterSource>,
@@ -731,8 +728,6 @@ pub struct PdfCraftApp {
     /// host's file), held while a prompt, dialog or open is under way so that they don't take its
     /// place.
     pub(crate) startup_files: Vec<(String, std::sync::Arc<[u8]>)>,
-    /// The home screen's community card was closed; it comes back next launch (not remembered).
-    pub community_card_closed: bool,
     /// A document asked to open this address; the user hasn't answered yet (#90, #91).
     pub pending_link: Option<PendingLink>,
     /// A document just opened asks for its window to fit its first page or to be centred
