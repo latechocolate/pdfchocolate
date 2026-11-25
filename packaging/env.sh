@@ -68,6 +68,9 @@ copy_docs() {
     if [[ -f "$ROOT/$f" ]]; then cp "$ROOT/$f" "$dest/"; fi
   done
   if [[ -d "$ROOT/licenses" ]]; then cp -R "$ROOT/licenses" "$dest/"; fi
+  # The licences of the fonts and icons compiled into the app, which NOTICE names.
+  mkdir -p "$dest/licenses"
+  cp "$ROOT"/assets/fonts/OFL-*.txt "$ROOT/assets/icons/LICENSE-lucide.txt" "$dest/licenses/"
   copy_font_licences "$dest"
   return
 }

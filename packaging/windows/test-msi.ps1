@@ -49,15 +49,21 @@ Assert-Equal $manufacturer[0] 'PdfChocolate' 'MSI manufacturer'
 # Embedded craft-fonts must ship their OFL notices; a build without them must not claim any.
 # Check the compiled File table, not only the WiX source, so a staging or component-group mistake
 # cannot silently omit the licences.
+# Files in licenses\ (LicensesFolder) are the licences of what is built into the app, not craft-fonts.
 $fontNotices = @()
-$fileView = $Database.OpenView('SELECT `FileName` FROM `File`')
+$builtInLicences = @()
+$fileView = $Database.OpenView('SELECT `File`.`FileName`, `Component`.`Directory_` FROM `File`, `Component` WHERE `File`.`Component_` = `Component`.`Component`')
 try {
   [void] $fileView.Execute()
   while ($record = $fileView.Fetch()) {
     $name = $record.StringData(1)
+    if ($record.StringData(2) -eq 'LicensesFolder') { $builtInLicences += $name; continue }
     if ($name -like '*OFL-*') { $fontNotices += $name }
   }
 } finally { [void] $fileView.Close() }
+foreach ($required in 'OFL-Inter.txt', 'OFL-JetBrainsMono.txt', 'OFL-DancingScript.txt', 'LICENSE-lucide.txt') {
+  if (-not ($builtInLicences | Where-Object { $_ -like "*$required" })) { throw "the MSI's licenses\ folder lacks $required" }
+}
 if ($CraftFontLicences -eq 1 -and $fontNotices.Count -eq 0) {
   throw 'the MSI carries no craft-font OFL notices'
 }

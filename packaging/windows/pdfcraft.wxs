@@ -65,6 +65,7 @@
     <StandardDirectory Id="ProgramFiles6432Folder">
       <Directory Id="INSTALLFOLDER" Name="PdfChocolate">
         <Directory Id="ModelsFolder" Name="models" />
+        <Directory Id="LicensesFolder" Name="licenses" />
       </Directory>
     </StandardDirectory>
     <StandardDirectory Id="ProgramMenuFolder" />
@@ -76,6 +77,7 @@
       <?endif?>
       <ComponentGroupRef Id="PdfcraftFiles" />
       <ComponentGroupRef Id="PdfcraftModels" />
+      <ComponentGroupRef Id="PdfcraftNotices" />
     </Feature>
   <Property Id="CRAFT_OPTION_1_M" Secure="yes"><RegistrySearch Id="CRAFT_OPTION_1_MSearch" Root="HKLM" Key="Software\Classes\SystemFileAssociations\.pdf\shell\PdfChocolate.Edit" Type="raw" />
     </Property><SetProperty Id="EXISTINGPDFCONTEXTMENU" Action="CraftLoadOption1M" Value="[CRAFT_OPTION_1_M]" After="LaunchConditions" Sequence="both" Condition="ALLUSERS = 1" /><Property Id="CRAFT_OPTION_1_U" Secure="yes"><RegistrySearch Id="CRAFT_OPTION_1_USearch" Root="HKCU" Key="Software\Classes\SystemFileAssociations\.pdf\shell\PdfChocolate.Edit" Type="raw" />
@@ -221,6 +223,13 @@
          component each, so new models ship without naming them here. -->
     <ComponentGroup Id="PdfcraftModels" Directory="ModelsFolder">
       <Files Include="$(var.ModelsDir)\*" />
+    </ComponentGroup>
+
+    <!-- Full licence texts NOTICE points to, in licenses\: the repository's licenses\ folder plus the
+         licences of the fonts and icons built into the app (assets\fonts\OFL-*.txt,
+         assets\icons\LICENSE-lucide.txt), staged by package.ps1. -->
+    <ComponentGroup Id="PdfcraftNotices" Directory="LicensesFolder">
+      <Files Include="$(var.AppNoticesDir)\**" />
     </ComponentGroup>
   </Fragment>
 </Wix>
